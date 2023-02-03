@@ -10,7 +10,7 @@ namespace RestSharpDemoProject
         {
             var client = new RestClient("https://api.github.com");
 
-            client.Authenticator = new HttpBasicAuthenticator("ME-BugHunter", "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");
+            client.Authenticator = new HttpBasicAuthenticator("ME-BugHunter", "");
 
             //Requesting just the first issue
             RestRequest request = new RestRequest("/repos/{user}/{repoName}/issues/{id}", Method.Get);
