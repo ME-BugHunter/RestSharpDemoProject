@@ -28,6 +28,42 @@ namespace RestSharpDemoProject
             Console.WriteLine("Issue number: " + issue.number);
             Console.WriteLine();
 
+            //Requesting one repo
+
+            var request5 = new RestRequest("/repos/{user}/{repoName}", Method.Get);
+            request5.AddUrlSegment("user", "ME-BugHunter");
+            request5.AddUrlSegment("repoName", "Postman");
+
+            var response5 = client.Execute(request5);
+
+            Console.WriteLine("Status code for getting repo: " + response.StatusCode);
+
+            var repo = JsonSerializer.Deserialize<Repo>(response5.Content);
+
+            Console.WriteLine("Repo name: " + repo.name);
+            Console.WriteLine("Repo full name: " + repo.full_name);
+            Console.WriteLine("Repo ID: " + repo.id);
+            Console.WriteLine();
+
+            //Requesting all repos
+
+            var request6 = new RestRequest("/users/{user}/repos", Method.Get);
+            request6.AddUrlSegment("user", "ME-BugHunter");
+
+            var response6 = client.Execute(request6);
+            Console.WriteLine("Status code for get all repos: " + response6.StatusCode);
+
+            var repos = JsonSerializer.Deserialize<List<Repo>>(response6.Content);
+
+            foreach (var rep in repos)
+            {
+                Console.WriteLine("Repo name: " + rep.name);
+                Console.WriteLine("Repo full name: " + rep.full_name);
+                Console.WriteLine("Repo ID: " + rep.id);
+                Console.WriteLine();
+            }
+
+
             //Requesting list of all issues
             RestRequest request2 = new RestRequest("/repos/ME-BugHunter/Postman/issues", Method.Get);
             var response2 = client.Execute(request2);
@@ -66,7 +102,7 @@ namespace RestSharpDemoProject
                 body = "some body for my issue",
                 labels = new string[] {"bug", "critical", "release"}
             };
-            request4.AddBody(issueBody);
+            request4.AddJsonBody(issueBody);
 
             request4.AddUrlSegment("user", "ME-BugHunter");
             request4.AddUrlSegment("repoName", "Postman");
@@ -80,6 +116,7 @@ namespace RestSharpDemoProject
 
             Console.WriteLine("Issue title: " + issue1.title);
             Console.WriteLine("Issue number: " + issue1.number);
+
         }
     }
 }
